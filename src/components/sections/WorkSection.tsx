@@ -1,6 +1,6 @@
 import { Container } from "@/components/ui/Container";
 import { SectionLabel } from "@/components/ui/SectionLabel";
-import { WorkCard } from "@/components/work/WorkCard";
+import { WorkGrid } from "@/components/work/WorkGrid";
 import { WORKS } from "@/content/works";
 
 export function WorkSection() {
@@ -21,11 +21,7 @@ export function WorkSection() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {WORKS.map((work) => (
-            <WorkCard key={work.slug} work={work} />
-          ))}
-        </div>
+        <WorkGrid works={WORKS} />
       </Container>
     </section>
   );
