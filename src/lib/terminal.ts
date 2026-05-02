@@ -24,7 +24,7 @@ export function processCommand(raw: string): TerminalLine[] {
     case "clear":
       return [{ type: "system", text: "__clear__" }];
 
-    case "ask":
+    case "ai":
       return [
         {
           type: "output",

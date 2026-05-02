@@ -4,7 +4,7 @@ export const TERMINAL_KNOWLEDGE = {
   work     - Work一覧
   skills   - Skill Stack概要
   contact  - 連絡先
-  ask      - 自由質問（近日公開）
+  ai       - 自由質問（近日公開）
   clear    - 画面をクリア`,
 
   whoami: `Jullien is an AI developer and web app developer, Founder of Human+.
@@ -29,4 +29,5 @@ Scroll down or type 'work' to see projects.`,
 
 export const TERMINAL_WELCOME = `Jullien Lab Terminal v1.0
 Type \`help\` to see available commands.
+Type \`ai\` to activate AI mode.
 `;
