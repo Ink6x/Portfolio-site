@@ -148,9 +148,9 @@ export function TerminalWindow({ defaultWidth = 960 }: TerminalWindowProps) {
         style={{ borderBottom: "1px solid var(--color-line)" }}
       >
         <div className="flex gap-1.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-text-subtle)]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-text-subtle)]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-text-subtle)]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#FF5F57]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#FFBD2E]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#28C840]" />
         </div>
         <span
           className="text-xs text-[var(--color-text-subtle)]"
