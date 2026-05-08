@@ -6,6 +6,17 @@ export interface WorkObjectAsset {
   alt: string;
 }
 
+export interface WorkDetailImage {
+  src: string;
+  alt: string;
+}
+
+export interface WorkMetric {
+  before?: string;
+  after: string;
+  label: string;
+}
+
 export interface Work {
   slug: string;
   name: string;
@@ -20,4 +31,6 @@ export interface Work {
   context?: string;
   whatIBuilt?: string;
   result?: string;
+  detailImages?: WorkDetailImage[];
+  metrics?: WorkMetric[];
 }
