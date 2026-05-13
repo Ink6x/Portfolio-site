@@ -28,9 +28,7 @@ interface TerminalOutputProps {
   focused: boolean;
   mode: TerminalMode;
   isWaiting: boolean;
-  onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
-  onFocus: () => void;
-  onBlur: () => void;
+  onFocusRequest: () => void;
 }
 
 export function TerminalOutput({
@@ -39,15 +37,9 @@ export function TerminalOutput({
   focused,
   mode,
   isWaiting,
-  onKeyDown,
-  onFocus,
-  onBlur,
+  onFocusRequest,
 }: TerminalOutputProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    containerRef.current?.focus();
-  }, []);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -59,18 +51,11 @@ export function TerminalOutput({
   return (
     <div
       ref={containerRef}
-      tabIndex={0}
-      onKeyDown={onKeyDown}
-      onFocus={onFocus}
-      onBlur={onBlur}
-      onClick={() => containerRef.current?.focus()}
+      onClick={onFocusRequest}
       className="terminal-scroll flex-1 overflow-y-auto px-4 py-3 text-sm cursor-text"
-      role="textbox"
-      aria-multiline="false"
-      aria-label="Terminal"
+      aria-label="Terminal output"
       style={{
         fontFamily: "var(--font-terminal)",
-        outline: "none",
       }}
     >
       {lines.map((line, i) => (

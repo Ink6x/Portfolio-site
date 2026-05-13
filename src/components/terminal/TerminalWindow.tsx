@@ -33,11 +33,19 @@ export function TerminalWindow({ defaultWidth = 960 }: TerminalWindowProps) {
 
   const dragRef = useRef<{ startX: number; startWidth: number } | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  // Track IME composition to prevent Enter from submitting mid-composition
+  const isComposingRef = useRef(false);
 
   useEffect(() => {
+    inputRef.current?.focus();
     return () => {
       abortRef.current?.abort();
     };
+  }, []);
+
+  const focusInput = useCallback(() => {
+    inputRef.current?.focus();
   }, []);
 
   const enterAiMode = useCallback(() => {
@@ -146,9 +154,24 @@ export function TerminalWindow({ defaultWidth = 960 }: TerminalWindowProps) {
     [termWidth]
   );
 
+  // onChange handles all normal text input including IME-composed Japanese characters.
+  // Backspace and Ctrl+V are handled natively by the input element.
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!isWaiting) {
+        setInputValue(e.target.value);
+        if (historyIndex !== -1) setHistoryIndex(-1);
+      }
+    },
+    [isWaiting, historyIndex]
+  );
+
+  // handleKeyDown handles only control keys. Character input is left to onChange.
   const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLDivElement>) => {
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter") {
+        // Skip if IME is composing (e.g., user pressing Enter to commit a kanji candidate)
+        if (isComposingRef.current) return;
         e.preventDefault();
         if (isWaiting) return;
 
@@ -204,12 +227,6 @@ export function TerminalWindow({ defaultWidth = 960 }: TerminalWindowProps) {
         return;
       }
 
-      if (e.key === "Backspace") {
-        e.preventDefault();
-        if (!isWaiting) setInputValue((prev) => prev.slice(0, -1));
-        return;
-      }
-
       if (e.key === "ArrowUp") {
         e.preventDefault();
         const next = Math.min(historyIndex + 1, inputHistory.length - 1);
@@ -243,22 +260,6 @@ export function TerminalWindow({ defaultWidth = 960 }: TerminalWindowProps) {
         setInputValue("");
         setHistoryIndex(-1);
         return;
-      }
-
-      if (e.key === "v" && (e.ctrlKey || e.metaKey)) {
-        e.preventDefault();
-        if (!isWaiting) {
-          navigator.clipboard.readText().then((text) => {
-            setInputValue((prev) => prev + text.replace(/\n/g, " "));
-          });
-        }
-        return;
-      }
-
-      if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
-        e.preventDefault();
-        if (!isWaiting) setInputValue((prev) => prev + e.key);
-        if (historyIndex !== -1) setHistoryIndex(-1);
       }
     },
     [
@@ -305,15 +306,41 @@ export function TerminalWindow({ defaultWidth = 960 }: TerminalWindowProps) {
         <div className="w-12" />
       </div>
 
+      {/* Hidden input — receives actual keyboard/IME input */}
+      <input
+        ref={inputRef}
+        type="text"
+        value={inputValue}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        onCompositionStart={() => { isComposingRef.current = true; }}
+        onCompositionEnd={() => { isComposingRef.current = false; }}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        aria-hidden="true"
+        tabIndex={-1}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          opacity: 0,
+          width: "1px",
+          height: "1px",
+          border: "none",
+          outline: "none",
+          padding: 0,
+          margin: 0,
+          pointerEvents: "none",
+        }}
+      />
+
       <TerminalOutput
         lines={lines}
         inputValue={inputValue}
         focused={focused}
         mode={mode}
         isWaiting={isWaiting}
-        onKeyDown={handleKeyDown}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
+        onFocusRequest={focusInput}
       />
 
       {/* Resize handle */}
