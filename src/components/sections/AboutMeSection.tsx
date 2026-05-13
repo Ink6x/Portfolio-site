@@ -68,7 +68,7 @@ export function AboutMeSection() {
               className="leading-8 text-[var(--color-text-muted)]"
               style={{ fontSize: "0.9375rem" }}
             >
-              現在はAIの研究・開発、企業のAI導入における技術支援、AIプロダクトの開発に携わっています。LLMを活用した業務ツールの設計・実装から、AWS上での運用、フロントエンドの構築まで、要件定義から本番運用までを一貫して担当することが多いです。
+              現在はAIの研究・開発、企業のAI導入における技術支援、AIプロダクトの開発に携わっています。AIを活用した業務ツールの要件定義から本番運用、AIモデルの開発などを担当することが多いです。
             </p>
 
           </div>
