@@ -17,7 +17,7 @@ export function ContactMeSection() {
             className="text-xs text-[var(--color-text-subtle)]"
             id="contact-heading"
           >
-            AI導入、AIエージェント開発、WebアプリへのAI組み込みなど、相談内容に応じてご連絡ください。
+            AI導入、AIエージェント開発、WebアプリへのAI組み込みなど、何でも気軽にご相談ください。
           </p>
         </div>
 
