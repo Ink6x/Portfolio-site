@@ -1,21 +1,49 @@
 import { NextRequest, NextResponse } from "next/server";
-import type { TerminalChatRequest, TerminalChatResponse } from "@/types/terminal";
+import { runTerminalChat } from "@/lib/ai/chat";
+import { parseChatRequest, ValidationError } from "@/lib/ai/validation";
+import { checkRateLimit } from "@/lib/ai/rate-limit";
+import type { TerminalChatResponse } from "@/types/terminal";
+
+export const runtime = "nodejs";
 
 export async function POST(request: NextRequest) {
-  const body = (await request.json()) as TerminalChatRequest;
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
 
-  if (!body.message || typeof body.message !== "string") {
+  const rateLimit = checkRateLimit(ip);
+  if (!rateLimit.allowed) {
     return NextResponse.json(
-      { error: "Invalid request" },
-      { status: 400 }
+      { error: "Too many requests" },
+      {
+        status: 429,
+        headers: { "Retry-After": String(rateLimit.retryAfter ?? 60) },
+      }
     );
   }
 
-  // TODO: Integrate with Anthropic Claude API once API key is configured
-  const response: TerminalChatResponse = {
-    answer:
-      "AIモードは近日公開予定です。現在は静的コマンドのみ対応しています。",
-  };
+  let input;
+  try {
+    const body: unknown = await request.json();
+    input = parseChatRequest(body);
+  } catch (err) {
+    if (err instanceof ValidationError) {
+      return NextResponse.json({ error: err.message }, { status: 400 });
+    }
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  }
 
-  return NextResponse.json(response);
+  try {
+    const result = await runTerminalChat(input);
+    const response: TerminalChatResponse = { answer: result.answer };
+    return NextResponse.json(response);
+  } catch (err) {
+    console.error(
+      "[terminal-chat] Upstream error:",
+      err instanceof Error ? err.message : "unknown"
+    );
+    return NextResponse.json(
+      { error: "AIモードで一時的なエラーが発生しました。" },
+      { status: 502 }
+    );
+  }
 }

@@ -15,8 +15,10 @@ export interface TerminalChatResponse {
   sources?: string[];
 }
 
+export type TerminalMode = "command" | "ai";
+
 export type TerminalLine =
-  | { type: "input"; text: string }
+  | { type: "input"; text: string; mode?: TerminalMode }
   | { type: "output"; text: string }
   | { type: "error"; text: string }
   | { type: "system"; text: string };
