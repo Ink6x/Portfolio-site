@@ -23,14 +23,13 @@ export function ContactMeSection() {
 
         <div className="flex flex-col gap-3">
           {LINKS.email && (
-            <a
-              href={`mailto:${LINKS.email}`}
-              className="text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
+            <p
+              className="text-sm text-[var(--color-text-muted)]"
               style={{ fontFamily: "var(--font-terminal)" }}
             >
               <span className="text-[var(--color-text-subtle)]">email: </span>
               {LINKS.email}
-            </a>
+            </p>
           )}
 
           {LINKS.github && (
