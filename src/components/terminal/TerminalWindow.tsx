@@ -1,13 +1,14 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { TerminalOutput } from "./TerminalOutput";
 import { processCommand } from "@/lib/terminal";
 import { TERMINAL_WELCOME } from "@/content/terminal-knowledge";
-import type { TerminalLine } from "@/types/terminal";
+import type { TerminalLine, TerminalMode, TerminalChatResponse } from "@/types/terminal";
 
 const MIN_WIDTH = 480;
 const MAX_WIDTH = 1200;
+const MAX_AI_HISTORY = 10;
 
 const INITIAL_LINES: TerminalLine[] = [
   { type: "system", text: TERMINAL_WELCOME },
@@ -24,7 +25,100 @@ export function TerminalWindow({ defaultWidth = 960 }: TerminalWindowProps) {
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [focused, setFocused] = useState(false);
   const [termWidth, setTermWidth] = useState(defaultWidth);
+  const [mode, setMode] = useState<TerminalMode>("command");
+  const [isWaiting, setIsWaiting] = useState(false);
+  const [aiHistory, setAiHistory] = useState<
+    Array<{ role: "user" | "assistant"; content: string }>
+  >([]);
+
   const dragRef = useRef<{ startX: number; startWidth: number } | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    return () => {
+      abortRef.current?.abort();
+    };
+  }, []);
+
+  const enterAiMode = useCallback(() => {
+    setMode("ai");
+    setLines((prev) => [
+      ...prev,
+      {
+        type: "system",
+        text: "AIモード ON — Jullienについて自由に質問してください。終了: exit",
+      },
+    ]);
+  }, []);
+
+  const exitAiMode = useCallback(() => {
+    abortRef.current?.abort();
+    abortRef.current = null;
+    setIsWaiting(false);
+    setAiHistory([]);
+    setMode("command");
+    setLines((prev) => [...prev, { type: "system", text: "AIモード OFF." }]);
+  }, []);
+
+  const dispatchAiMessage = useCallback(
+    async (message: string, currentHistory: typeof aiHistory) => {
+      const abort = new AbortController();
+      abortRef.current = abort;
+      setIsWaiting(true);
+
+      try {
+        const res = await fetch("/api/terminal-chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message, history: currentHistory }),
+          signal: abort.signal,
+        });
+
+        if (res.status === 429) {
+          const retryAfter = res.headers.get("Retry-After") ?? "60";
+          setLines((prev) => [
+            ...prev,
+            {
+              type: "error",
+              text: `リクエストが多すぎます。${retryAfter}秒後に再試行してください。`,
+            },
+          ]);
+          return;
+        }
+
+        if (!res.ok) {
+          setLines((prev) => [
+            ...prev,
+            { type: "error", text: "AIモードで一時的なエラーが発生しました。" },
+          ]);
+          return;
+        }
+
+        const data = (await res.json()) as TerminalChatResponse;
+        const answer = data.answer ?? "応答を受信できませんでした。";
+
+        setLines((prev) => [...prev, { type: "output", text: answer }]);
+        setAiHistory((prev) => {
+          const updated = [
+            ...prev,
+            { role: "user" as const, content: message },
+            { role: "assistant" as const, content: answer },
+          ];
+          return updated.slice(-MAX_AI_HISTORY);
+        });
+      } catch (err) {
+        if (err instanceof Error && err.name === "AbortError") return;
+        setLines((prev) => [
+          ...prev,
+          { type: "error", text: "AIモードで一時的なエラーが発生しました。" },
+        ]);
+      } finally {
+        setIsWaiting(false);
+        abortRef.current = null;
+      }
+    },
+    []
+  );
 
   const handleResizeStart = useCallback(
     (e: React.MouseEvent) => {
@@ -33,7 +127,10 @@ export function TerminalWindow({ defaultWidth = 960 }: TerminalWindowProps) {
       const onMouseMove = (ev: MouseEvent) => {
         if (!dragRef.current) return;
         const delta = ev.clientX - dragRef.current.startX;
-        const next = Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, dragRef.current.startWidth + delta));
+        const next = Math.min(
+          MAX_WIDTH,
+          Math.max(MIN_WIDTH, dragRef.current.startWidth + delta)
+        );
         setTermWidth(next);
       };
 
@@ -53,8 +150,40 @@ export function TerminalWindow({ defaultWidth = 960 }: TerminalWindowProps) {
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (e.key === "Enter") {
         e.preventDefault();
+        if (isWaiting) return;
+
         const trimmed = inputValue.trim();
         if (!trimmed) return;
+
+        setInputHistory((prev) => [trimmed, ...prev]);
+        setInputValue("");
+        setHistoryIndex(-1);
+
+        if (mode === "ai") {
+          const cmd = trimmed.toLowerCase();
+
+          if (cmd === "exit" || cmd === "quit") {
+            setLines((prev) => [...prev, { type: "input", text: trimmed, mode: "ai" }]);
+            exitAiMode();
+            return;
+          }
+
+          if (cmd === "clear") {
+            setLines([{ type: "system", text: TERMINAL_WELCOME }]);
+            return;
+          }
+
+          setLines((prev) => [...prev, { type: "input", text: trimmed, mode: "ai" }]);
+          void dispatchAiMessage(trimmed, aiHistory.slice(-MAX_AI_HISTORY));
+          return;
+        }
+
+        // Command mode
+        if (trimmed.toLowerCase() === "ai") {
+          setLines((prev) => [...prev, { type: "input", text: trimmed, mode: "command" }]);
+          enterAiMode();
+          return;
+        }
 
         const results = processCommand(trimmed);
 
@@ -64,22 +193,20 @@ export function TerminalWindow({ defaultWidth = 960 }: TerminalWindowProps) {
           results[0].text === "__clear__"
         ) {
           setLines([{ type: "system", text: TERMINAL_WELCOME }]);
-          setInputHistory((prev) => [trimmed, ...prev]);
-          setInputValue("");
-          setHistoryIndex(-1);
           return;
         }
 
-        setLines((prev) => [...prev, { type: "input", text: trimmed }, ...results]);
-        setInputHistory((prev) => [trimmed, ...prev]);
-        setInputValue("");
-        setHistoryIndex(-1);
+        setLines((prev) => [
+          ...prev,
+          { type: "input", text: trimmed, mode: "command" },
+          ...results,
+        ]);
         return;
       }
 
       if (e.key === "Backspace") {
         e.preventDefault();
-        setInputValue((prev) => prev.slice(0, -1));
+        if (!isWaiting) setInputValue((prev) => prev.slice(0, -1));
         return;
       }
 
@@ -100,6 +227,11 @@ export function TerminalWindow({ defaultWidth = 960 }: TerminalWindowProps) {
       }
 
       if (e.key === "c" && e.ctrlKey) {
+        if (isWaiting) {
+          abortRef.current?.abort();
+          abortRef.current = null;
+          setIsWaiting(false);
+        }
         setInputValue("");
         setHistoryIndex(-1);
         return;
@@ -115,19 +247,31 @@ export function TerminalWindow({ defaultWidth = 960 }: TerminalWindowProps) {
 
       if (e.key === "v" && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
-        navigator.clipboard.readText().then((text) => {
-          setInputValue((prev) => prev + text.replace(/\n/g, " "));
-        });
+        if (!isWaiting) {
+          navigator.clipboard.readText().then((text) => {
+            setInputValue((prev) => prev + text.replace(/\n/g, " "));
+          });
+        }
         return;
       }
 
       if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
         e.preventDefault();
-        setInputValue((prev) => prev + e.key);
+        if (!isWaiting) setInputValue((prev) => prev + e.key);
         if (historyIndex !== -1) setHistoryIndex(-1);
       }
     },
-    [inputValue, inputHistory, historyIndex]
+    [
+      inputValue,
+      inputHistory,
+      historyIndex,
+      mode,
+      isWaiting,
+      aiHistory,
+      enterAiMode,
+      exitAiMode,
+      dispatchAiMessage,
+    ]
   );
 
   return (
@@ -156,16 +300,17 @@ export function TerminalWindow({ defaultWidth = 960 }: TerminalWindowProps) {
           className="text-xs text-[var(--color-text-subtle)]"
           style={{ fontFamily: "var(--font-terminal)" }}
         >
-          jullien@lab — bash
+          {mode === "ai" ? "jullien@lab — AI mode" : "jullien@lab — bash"}
         </span>
         <div className="w-12" />
       </div>
 
-      {/* Single scrollable body — output + input line in one stream */}
       <TerminalOutput
         lines={lines}
         inputValue={inputValue}
         focused={focused}
+        mode={mode}
+        isWaiting={isWaiting}
         onKeyDown={handleKeyDown}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}

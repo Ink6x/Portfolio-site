@@ -25,12 +25,7 @@ export function processCommand(raw: string): TerminalLine[] {
       return [{ type: "system", text: "__clear__" }];
 
     case "ai":
-      return [
-        {
-          type: "output",
-          text: "AIモードは近日公開予定です。現在は静的コマンドのみ対応しています。",
-        },
-      ];
+      return [{ type: "system", text: "__ai_mode__" }];
 
     default:
       if (input === "") {
