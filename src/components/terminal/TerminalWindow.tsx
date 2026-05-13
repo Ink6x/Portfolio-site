@@ -284,7 +284,7 @@ export function TerminalWindow({ defaultWidth = 960 }: TerminalWindowProps) {
         border: "1px solid var(--color-line)",
         width: `${termWidth}px`,
         maxWidth: "100%",
-        height: "470px",
+        height: "495px",
       }}
     >
       {/* Title bar */}

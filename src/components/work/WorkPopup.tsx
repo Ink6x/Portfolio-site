@@ -28,7 +28,7 @@ export function WorkPopup({ work, visible }: WorkPopupProps) {
         {work.role.map((r) => (
           <span
             key={r}
-            className="rounded-sm border border-[var(--color-line)] px-1.5 py-0.5 text-[10px] text-[var(--color-text-subtle)]"
+            className="rounded-sm border border-[var(--color-line)] px-1.5 py-0.5 text-[11px] text-[var(--color-text-subtle)]"
           >
             {r}
           </span>
@@ -36,7 +36,7 @@ export function WorkPopup({ work, visible }: WorkPopupProps) {
         {work.stack.slice(0, 3).map((s) => (
           <span
             key={s}
-            className="rounded-sm border border-[var(--color-line)] px-1.5 py-0.5 text-[10px] text-[var(--color-text-subtle)]"
+            className="rounded-sm border border-[var(--color-line)] px-1.5 py-0.5 text-[11px] text-[var(--color-text-subtle)]"
           >
             {s}
           </span>

@@ -134,7 +134,7 @@ export function PentagonSkillChart({ diagram }: PentagonSkillChartProps) {
         {diagram.tools.map((tool) => (
           <span
             key={tool}
-            className="text-[10px] text-[var(--color-text-subtle)]"
+            className="text-[11px] text-[var(--color-text-subtle)]"
           >
             {tool}
           </span>
