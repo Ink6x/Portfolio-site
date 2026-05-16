@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Oxanium, Fira_Code, Space_Mono, Audiowide } from "next/font/google";
+import { Oxanium, Fira_Code, Space_Mono, Audiowide, Outfit, M_PLUS_1p } from "next/font/google";
 import "./globals.css";
 
 const oxanium = Oxanium({
@@ -30,6 +30,20 @@ const audiowide = Audiowide({
   display: "swap",
 });
 
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  variable: "--font-outfit",
+  display: "swap",
+});
+
+const mPlus1p = M_PLUS_1p({
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  variable: "--font-mplus",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: {
     default: "Ink6x Lab",
@@ -45,7 +59,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className={`h-full ${oxanium.variable} ${firaCode.variable} ${spaceMono.variable} ${audiowide.variable}`}>
+    <html lang="ja" className={`h-full ${oxanium.variable} ${firaCode.variable} ${spaceMono.variable} ${audiowide.variable} ${outfit.variable} ${mPlus1p.variable}`}>
       <body className="min-h-full">{children}</body>
     </html>
   );
