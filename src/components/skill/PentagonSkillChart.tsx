@@ -4,7 +4,7 @@ interface PentagonSkillChartProps {
   diagram: SkillDiagram;
 }
 
-const SIZE = 180;
+const SIZE = 200;
 const CENTER = SIZE / 2;
 const MAX_VALUE = 5;
 const LEVELS = 5;
@@ -51,7 +51,7 @@ export function PentagonSkillChart({ diagram }: PentagonSkillChartProps) {
     maxRadius
   );
 
-  const textRadius = maxRadius + 22;
+  const textRadius = maxRadius + 30;
   const labelPoints = buildAxisPoints(count, textRadius);
 
   const ariaLabel = `${diagram.title}: ${diagram.axes
@@ -62,8 +62,8 @@ export function PentagonSkillChart({ diagram }: PentagonSkillChartProps) {
     <div className="flex flex-col items-center gap-4">
       <svg
         width={SIZE}
-        height={SIZE + 16}
-        viewBox={`0 0 ${SIZE} ${SIZE + 16}`}
+        height={SIZE + 20}
+        viewBox={`0 0 ${SIZE} ${SIZE + 20}`}
         aria-label={ariaLabel}
         role="img"
         className="overflow-visible"
@@ -113,7 +113,7 @@ export function PentagonSkillChart({ diagram }: PentagonSkillChartProps) {
               y={pt.y}
               textAnchor={textAnchor}
               dominantBaseline="middle"
-              fontSize="7.5"
+              fontSize="15"
               fill="rgba(255,255,255,0.45)"
               style={{ fontFamily: "var(--font-terminal)" }}
             >
@@ -124,22 +124,15 @@ export function PentagonSkillChart({ diagram }: PentagonSkillChartProps) {
       </svg>
 
       <h3
-        className="text-xs tracking-widest text-[var(--color-text-muted)]"
-        style={{ fontFamily: "var(--font-menu)" }}
+        className="text-[18px] tracking-widest text-[var(--color-text-muted)]"
+        style={{
+          fontFamily: "var(--font-menu)",
+          transform: "scaleX(1.2)",
+          transformOrigin: "center",
+        }}
       >
         {diagram.title}
       </h3>
-
-      <div className="flex flex-wrap justify-center gap-1">
-        {diagram.tools.map((tool) => (
-          <span
-            key={tool}
-            className="text-[11px] text-[var(--color-text-subtle)]"
-          >
-            {tool}
-          </span>
-        ))}
-      </div>
     </div>
   );
 }
