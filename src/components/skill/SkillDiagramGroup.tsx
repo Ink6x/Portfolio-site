@@ -17,7 +17,7 @@ export function SkillDiagramGroup() {
           whileInView={{ rotateY: 0, z: 0, opacity: 1 }}
           transition={{
             duration: 1.4,
-            delay: i * 0.2,
+            delay: i % 2 === 1 ? i * 0.2 - 0.1 : i * 0.2,
             ease: [0.16, 1, 0.3, 1],
           }}
           viewport={{ once: true, amount: 0.2 }}
