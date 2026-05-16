@@ -126,7 +126,7 @@ export function PentagonSkillChart({ diagram }: PentagonSkillChartProps) {
       <h3
         className="text-[20px] tracking-widest text-[var(--color-text-muted)]"
         style={{
-          fontFamily: "var(--font-audiowide)",
+          fontFamily: "var(--font-space)",
           transform: "scaleX(1.2)",
           transformOrigin: "center",
         }}
