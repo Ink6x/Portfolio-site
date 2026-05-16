@@ -115,7 +115,7 @@ export function PentagonSkillChart({ diagram }: PentagonSkillChartProps) {
               dominantBaseline="middle"
               fontSize="15"
               fill="rgba(255,255,255,0.45)"
-              style={{ fontFamily: "var(--font-terminal)" }}
+              style={{ fontFamily: "var(--font-display)" }}
             >
               {ax.label}
             </text>
