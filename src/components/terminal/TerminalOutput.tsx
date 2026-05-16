@@ -6,7 +6,7 @@ import type { TerminalLine, TerminalMode } from "@/types/terminal";
 function CommandPrompt() {
   return (
     <span className="mr-2 select-none">
-      <span style={{ color: "#7ec8a4" }}>jullien@lab</span>
+      <span style={{ color: "#7ec8a4" }}>ink6x@lab</span>
       <span style={{ color: "var(--color-text-subtle)" }}>:</span>
       <span style={{ color: "#7aa2d4" }}>~/lab</span>
       <span style={{ color: "var(--color-text)" }}> $</span>

@@ -16,7 +16,7 @@ export function TerminalSection() {
             className="text-xs text-[var(--color-text-subtle)]"
             id="terminal-heading"
           >
-            Jullienについて知りたいことを、ターミナルから質問できます。
+            Ink6xについて知りたいことを、ターミナルから質問できます。
           </p>
         </div>
         <TerminalWindow />

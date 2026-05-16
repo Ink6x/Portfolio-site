@@ -14,12 +14,12 @@ const MonochromeEarthWithFallback = dynamic(
   }
 );
 
-export function JullienLabSection() {
+export function Ink6xLabSection() {
   return (
     <section
       id="top"
       className="relative flex h-screen w-full items-center overflow-hidden"
-      aria-label="Jullien Lab"
+      aria-label="Ink6x Lab"
     >
       {/* Background globe */}
       <MonochromeEarthWithFallback />
@@ -30,7 +30,7 @@ export function JullienLabSection() {
           className="text-[52px] font-semibold tracking-[0.3em] text-[var(--color-text)] md:text-[79px] lg:text-[106px]"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Jullien Lab
+          Ink6x Lab
         </h1>
       </div>
 

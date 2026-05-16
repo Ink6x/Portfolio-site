@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Container } from "@/components/ui/Container";
 
 const FULL_TEXT = `はじめまして！
-ここは、AI開発が専門のエンジニ屋、Jullienのポートフォリオサイトです！
+ここは、AI開発が専門のエンジニ屋、Ink6xのポートフォリオサイトです！
 私が手掛けた制作物、身に着けたスキルを皆さんに知っていただけるよう、丁寧にまとめました。是非お茶でも飲みながらゆっくりとこのサイトを散策していってください
 
 etc. 右下のボタンを押すと、ターミナルライクな画面でAIに僕のことを質問できます！つかってみてネ`;

@@ -1,13 +1,13 @@
 export const TERMINAL_KNOWLEDGE = {
   help: `Available commands:
-  whoami   - Jullienについて
+  whoami   - Ink6xについて
   work     - Work一覧
   skills   - Skill Stack概要
   contact  - 連絡先
   ai       - AIに自由質問（終了: exit）
   clear    - 画面をクリア`,
 
-  whoami: `Jullien is an AI developer and web app developer, Founder of Human+.
+  whoami: `Ink6x is an AI developer and web app developer, Founder of Human+.
 AI導入、AIエージェント構築、AIを組み込んだWebアプリ開発に取り組んでいます。`,
 
   work: `Current work entries:
@@ -27,7 +27,7 @@ Detailed surrounding technologies are organized on StackShare.`,
 Scroll down or type 'work' to see projects.`,
 } as const;
 
-export const TERMINAL_WELCOME = `Jullien Lab Terminal v1.0
+export const TERMINAL_WELCOME = `Ink6x Lab Terminal v1.0
 Type \`help\` to see available commands.
-Type \`ai\` to ask me anything about Jullien.
+Type \`ai\` to ask me anything about Ink6x.
 `;

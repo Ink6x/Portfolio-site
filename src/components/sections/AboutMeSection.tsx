@@ -23,7 +23,7 @@ export function AboutMeSection() {
             >
               <Image
                 src="/images/profile.jpg"
-                alt="Jullien"
+                alt="Ink6x"
                 fill
                 className="object-cover"
                 priority
@@ -31,7 +31,7 @@ export function AboutMeSection() {
             </div>
             <div className="text-center">
               <p className="text-sm text-[var(--color-text)]" id="about-heading">
-                Jullien
+                Ink6x
               </p>
               <p className="text-xs text-[var(--color-text-subtle)]">
                 Founder of Human+

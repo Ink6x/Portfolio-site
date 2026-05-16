@@ -28,7 +28,7 @@ export function SiteHeader() {
         className="inline-block text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
         style={{ fontFamily: "var(--font-menu)", fontWeight: "bold", letterSpacing: "0.18em" }}
       >
-        Jullien Lab
+        Ink6x Lab
       </a>
 
       <nav aria-label="Main navigation">

@@ -54,7 +54,7 @@ export function TerminalWindow({ defaultWidth = 960 }: TerminalWindowProps) {
       ...prev,
       {
         type: "system",
-        text: "AIモード ON — Jullienについて自由に質問してください。終了: exit",
+        text: "AIモード ON — Ink6xについて自由に質問してください。終了: exit",
       },
     ]);
   }, []);
@@ -301,7 +301,7 @@ export function TerminalWindow({ defaultWidth = 960 }: TerminalWindowProps) {
           className="text-xs text-[var(--color-text-subtle)]"
           style={{ fontFamily: "var(--font-terminal)" }}
         >
-          {mode === "ai" ? "jullien@lab — AI mode" : "jullien@lab — bash"}
+          {mode === "ai" ? "ink6x@lab — AI mode" : "ink6x@lab — bash"}
         </span>
         <div className="w-12" />
       </div>

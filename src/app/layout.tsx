@@ -18,11 +18,11 @@ const firaCode = Fira_Code({
 
 export const metadata: Metadata = {
   title: {
-    default: "Jullien Lab",
-    template: "%s | Jullien Lab",
+    default: "Ink6x Lab",
+    template: "%s | Ink6x Lab",
   },
   description:
-    "AI systems, agents, and web apps by Jullien, Founder of Human+.",
+    "AI systems, agents, and web apps by Ink6x, Founder of Human+.",
 };
 
 export default function RootLayout({

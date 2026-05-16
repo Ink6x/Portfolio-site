@@ -1,5 +1,5 @@
 import { PageShell } from "@/components/layout/PageShell";
-import { JullienLabSection } from "@/components/sections/JullienLabSection";
+import { Ink6xLabSection } from "@/components/sections/Ink6xLabSection";
 import { TypewriterSection } from "@/components/sections/TypewriterSection";
 import { AboutMeSection } from "@/components/sections/AboutMeSection";
 import { WorkSection } from "@/components/sections/WorkSection";
@@ -10,7 +10,7 @@ import { TerminalLauncher } from "@/components/terminal/TerminalLauncher";
 export default function HomePage() {
   return (
     <PageShell>
-      <JullienLabSection />
+      <Ink6xLabSection />
       <TypewriterSection />
       <AboutMeSection />
       <WorkSection />
