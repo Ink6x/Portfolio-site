@@ -17,7 +17,7 @@ export function SkillStackSection() {
             className="text-xs text-[var(--color-text-subtle)]"
             id="skill-heading"
           >
-            実務で使用した技術を中心に、AI・Webアプリ・クラウド/自動化の3領域で整理しています。
+            実務で使用した技術を中心に、Languages・AI/LLM・Web/App・Infra の4領域で整理しています。
           </p>
         </div>
 
