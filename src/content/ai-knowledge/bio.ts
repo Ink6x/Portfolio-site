@@ -7,7 +7,6 @@ export const BIO_KNOWLEDGE = `# Ink6x について
 
 - 2026年: Human+（ヒューマンプラス）設立
 - 2025年: コーチング事業向けAI導入
-- 2024年: AI Output Review Studio 設立
 - 2021年〜: AIの個人研究（継続中）
 
 # フォーカスエリア
