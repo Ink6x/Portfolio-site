@@ -1,11 +1,18 @@
 import type { SkillDiagram } from "@/types/skill";
 
+// Rating scale (1–5):
+// 5 = 実務で使用できる（実務で3年以上の経験がある）
+// 4 = 実務で使用ができる
+// 3 = 実務経験はないが、教われば（あるいは慣れれば）できる
+// 2 = 多少はできる
+// 1 = あまりできない
+
 export const SKILL_DIAGRAMS: SkillDiagram[] = [
   {
     title: "Languages",
     axes: [
       { label: "TypeScript", value: 4 },
-      { label: "Python", value: 4 },
+      { label: "Python", value: 5 },
       { label: "JavaScript", value: 4 },
       { label: "SQL", value: 3 },
       { label: "Bash", value: 3 },
@@ -15,13 +22,13 @@ export const SKILL_DIAGRAMS: SkillDiagram[] = [
   {
     title: "AI / LLM",
     axes: [
-      { label: "Claude API", value: 4 },
+      { label: "Claude API", value: 5 },
       { label: "OpenAI API", value: 4 },
       { label: "LangChain", value: 4 },
       { label: "LangGraph", value: 4 },
-      { label: "Mastra", value: 3 },
+      { label: "RAG", value: 4 },
     ],
-    tools: ["Claude API", "OpenAI API", "LangChain", "LangGraph", "Mastra", "RAG"],
+    tools: ["Claude API", "OpenAI API", "LangChain", "LangGraph", "RAG", "Mastra"],
   },
   {
     title: "Web / App",
@@ -41,8 +48,8 @@ export const SKILL_DIAGRAMS: SkillDiagram[] = [
       { label: "Docker", value: 3 },
       { label: "Vercel", value: 4 },
       { label: "GitHub Actions", value: 3 },
-      { label: "n8n", value: 4 },
+      { label: "Playwright", value: 3 },
     ],
-    tools: ["AWS", "Docker", "Vercel", "GitHub Actions", "n8n", "Playwright"],
+    tools: ["AWS", "Docker", "Vercel", "GitHub Actions", "Playwright", "n8n"],
   },
 ];
