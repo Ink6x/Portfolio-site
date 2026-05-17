@@ -3,12 +3,6 @@ export const BIO_KNOWLEDGE = `# Ink6x について
 役割: AI Developer / Web App Developer / Founder of Human+
 専門: AI導入、AIエージェント構築、AIを組み込んだWebアプリ開発
 
-# 経歴
-
-- 2026年: Human+（ヒューマンプラス）設立
-- 2025年: コーチング事業向けAI導入
-- 2021年〜: AIの個人研究（継続中）
-
 # フォーカスエリア
 - AI開発
 - LLM・AIのモデルの研究開発
