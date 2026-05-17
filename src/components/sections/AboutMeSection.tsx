@@ -65,19 +65,19 @@ export function AboutMeSection() {
           <div className="flex max-w-xl flex-col gap-5">
             <p
               className="leading-8 text-[var(--color-text-muted)]"
-              style={{ fontSize: "17px" }}
+              style={{ fontSize: "15px" }}
             >
               中学2年生のときに観た『マトリックス』をきっかけに、情報の世界にのめりこむ。独学でAI開発からスタートし、Linux、インフラ、Web開発と、必要に応じて領域を広げてきました。
             </p>
             <p
               className="leading-8 text-[var(--color-text-muted)]"
-              style={{ fontSize: "17px" }}
+              style={{ fontSize: "15px" }}
             >
               大学では情報科学を専攻し、脳情報解析の研究室に所属。人間の認知と機械学習の両面から「知能」に触れた経験が、現在の土台になっています。
             </p>
             <p
               className="leading-8 text-[var(--color-text-muted)]"
-              style={{ fontSize: "17px" }}
+              style={{ fontSize: "15px" }}
             >
               現在はAIの研究・開発、企業のAI導入における技術支援、AIプロダクトの開発に携わっています。AIを活用した業務ツールの要件定義から本番運用、AIモデルの開発などを担当することが多いです。
             </p>
