@@ -146,7 +146,7 @@ portfolio-site/
 
 お問い合わせ・ご相談はメールでお気軽にどうぞ。
 
-- Email: iand0108yokohama@gmail.com
+- Email: humanxxplus@gmail.com
 
 ---
 
