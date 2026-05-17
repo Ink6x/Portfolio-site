@@ -81,7 +81,7 @@ export function TypewriterSection() {
         <p
           style={{
             fontFamily: "var(--font-body)",
-            fontSize: "14px",
+            fontSize: "16px",
             lineHeight: 2.1,
             color: "var(--color-text-muted)",
             maxWidth: "620px",
