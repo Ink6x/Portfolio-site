@@ -14,10 +14,13 @@ export function SkillStackSection() {
         <div className="mb-10 flex flex-col gap-3">
           <SectionLabel>SKILL STACK</SectionLabel>
           <p
-            className="text-xs text-[var(--color-text-subtle)]"
+            className="text-[17px] text-[var(--color-text-subtle)]"
             id="skill-heading"
           >
             実務で使用した技術を中心に、Languages・AI/LLM・Web/App・Infra の4領域で整理しています。
+          </p>
+          <p className="text-xs text-[var(--color-text-subtle)] opacity-60">
+            評価基準 — 5: 実務3年以上&nbsp;&nbsp;4: 実務経験あり&nbsp;&nbsp;3: 実務経験がないがある程度できる&nbsp;&nbsp;2: 多少できる&nbsp;&nbsp;1: 初学者レベル
           </p>
         </div>
 
