@@ -59,15 +59,39 @@ export const WORKS: Work[] = [
   {
     slug: "business-automation-agent",
     name: "業務効率化AIエージェント",
-    summary: "TODO: 業務フローを自動化するAIエージェントの構築。",
-    role: ["AI Engineer", "Backend"],
-    stack: ["Python", "LangGraph", "FastAPI", "PostgreSQL"],
+    summary:
+      "対外オペレーション業務を、Slackから自然言語で制御できる実行基盤に再設計した匿名化受託案件。AIが実行計画を生成するが、外部副作用はPolicy Gateの機械的検証と人間の承認を通過するまで実行されない設計。担当者1人あたり月15〜20時間の工数削減を実現した。",
+    role: ["AI Engineer", "Backend", "System Design"],
+    stack: [
+      "Python",
+      "Slack API",
+      "Action DSL",
+      "Policy Gate",
+      "Command Registry",
+      "Playwright",
+      "Docker",
+      "AWS",
+      "Notion API",
+      "Audit Logging",
+    ],
     status: "anonymized",
     detailPage: true,
     objectAsset: {
       fallbackImage: "/images/work/business-automation-agent/card.png",
       alt: "業務効率化AIエージェントのビジュアル表現",
     },
+    context:
+      "対外オペレーション業務の担当者は、プラットフォームごとに CLI を操作し、対応状況を Slack・CLI・Notion に分散して管理していた。条件変更のたびに手作業が発生し、確認コストと抜け漏れリスクが積み上がる構造だった。チーム全体で月60時間規模の工数がルーティンに消えており、オペレーション品質の改善に使える余力もなかった。",
+    whatIBuilt:
+      "設計の核心は「AIを実行主体にしない」という判断だった。Openclaw（AI）が実行計画を生成するが、Policy Gateが権限・テナント確認・Command Registry照合・引数スキーマ検証・影響範囲判定・dry-run完了・承認確認・冪等キー重複の8項目を機械的に検証するまで、いかなる外部副作用も発生しない。agent-with-toolsは採用せず、型付きAction DSLのCommand Registryに登録された操作のみを受け付ける構成にした。\n\nControl Plane（受付・状態管理・承認）、Job Queue（非同期実行・冪等性制御・レート制限）、Sandbox Worker（コンテナ隔離環境）、State Store（実行状態の正）、Outbox/Reconciliation（Notion反映と状態照合の二重保全）、Audit/Observability（構造化ログ・append-only監査証跡）の各レイヤーを実装した。冪等キーはhash(action_id + target_set + selector + business_period)で構成し、Slackのネットワーク再送による二重実行を設計で防止した。Notionの eventual consistency とAPI rate limitに依存しない設計とするため、State Storeを正として扱いNotionを投影先に位置づけた。",
+    result:
+      "担当者1人あたり月15〜20時間の工数削減。コマンド更新時間を約4分の1に圧縮。状況確認を10分から1分台に短縮。GitHubに設計ドキュメント（アーキテクチャ・セキュリティ設計・オペレーション）を公開済み。",
+    metrics: [
+      { after: "月15〜20時間削減", label: "担当者1人あたりの工数削減" },
+      { before: "10分", after: "1分台", label: "状況確認にかかる時間" },
+      { after: "約1/4", label: "コマンド更新時間の圧縮率" },
+      { after: "8項目", label: "Policy Gateの検証チェック数" },
+    ],
   },
   {
     slug: "coaching-ai-implementation",

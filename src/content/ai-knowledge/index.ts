@@ -4,6 +4,7 @@ import { WORKS } from "@/content/works";
 import { SKILL_DIAGRAMS } from "@/content/skills";
 import { BIO_KNOWLEDGE } from "./bio";
 import { KNOWLEDGE_POLICIES } from "./policies";
+import { PORTFOLIO_OVERVIEW } from "./overview";
 
 function serializeMetric(m: WorkMetric): string {
   return m.before ? `${m.label}: ${m.before} → ${m.after}` : `${m.label}: ${m.after}`;
@@ -43,6 +44,7 @@ function serializeSkillDiagram(d: SkillDiagram): string {
 // Assembled once at module load — stable string required for Prompt Caching hits
 const KNOWLEDGE_CONTEXT = [
   BIO_KNOWLEDGE,
+  "\n" + PORTFOLIO_OVERVIEW,
   "\n## Works（プロジェクト）",
   WORKS.map(serializeWork).join("\n\n"),
   "\n## Skills（スキルスタック）",
