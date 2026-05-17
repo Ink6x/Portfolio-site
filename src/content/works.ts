@@ -57,80 +57,6 @@ export const WORKS: Work[] = [
     ],
   },
   {
-    slug: "business-automation-agent",
-    name: "業務効率化AIエージェント",
-    summary:
-      "対外オペレーション業務を、Slackから自然言語で制御できる実行基盤に再設計した匿名化受託案件。AIが実行計画を生成するが、外部副作用はPolicy Gateの機械的検証と人間の承認を通過するまで実行されない設計。担当者1人あたり月15〜20時間の工数削減を実現した。",
-    role: ["AI Engineer", "Backend", "System Design"],
-    stack: [
-      "Python",
-      "Slack API",
-      "Action DSL",
-      "Policy Gate",
-      "Command Registry",
-      "Playwright",
-      "Docker",
-      "AWS",
-      "Notion API",
-      "Audit Logging",
-    ],
-    status: "anonymized",
-    detailPage: true,
-    objectAsset: {
-      fallbackImage: "/images/work/business-automation-agent/card.png",
-      alt: "業務効率化AIエージェントのビジュアル表現",
-    },
-    context:
-      "対外オペレーション業務の担当者は、プラットフォームごとに CLI を操作し、対応状況を Slack・CLI・Notion に分散して管理していた。条件変更のたびに手作業が発生し、確認コストと抜け漏れリスクが積み上がる構造だった。チーム全体で月60時間規模の工数がルーティンに消えており、オペレーション品質の改善に使える余力もなかった。",
-    whatIBuilt:
-      "設計の核心は「AIを実行主体にしない」という判断だった。Openclaw（AI）が実行計画を生成するが、Policy Gateが権限・テナント確認・Command Registry照合・引数スキーマ検証・影響範囲判定・dry-run完了・承認確認・冪等キー重複の8項目を機械的に検証するまで、いかなる外部副作用も発生しない。agent-with-toolsは採用せず、型付きAction DSLのCommand Registryに登録された操作のみを受け付ける構成にした。\n\nControl Plane（受付・状態管理・承認）、Job Queue（非同期実行・冪等性制御・レート制限）、Sandbox Worker（コンテナ隔離環境）、State Store（実行状態の正）、Outbox/Reconciliation（Notion反映と状態照合の二重保全）、Audit/Observability（構造化ログ・append-only監査証跡）の各レイヤーを実装した。冪等キーはhash(action_id + target_set + selector + business_period)で構成し、Slackのネットワーク再送による二重実行を設計で防止した。Notionの eventual consistency とAPI rate limitに依存しない設計とするため、State Storeを正として扱いNotionを投影先に位置づけた。",
-    result:
-      "担当者1人あたり月15〜20時間の工数削減。コマンド更新時間を約4分の1に圧縮。状況確認を10分から1分台に短縮。GitHubに設計ドキュメント（アーキテクチャ・セキュリティ設計・オペレーション）を公開済み。",
-    metrics: [
-      { after: "月15〜20時間削減", label: "担当者1人あたりの工数削減" },
-      { before: "10分", after: "1分台", label: "状況確認にかかる時間" },
-      { after: "約1/4", label: "コマンド更新時間の圧縮率" },
-      { after: "8項目", label: "Policy Gateの検証チェック数" },
-    ],
-  },
-  {
-    slug: "coaching-ai-implementation",
-    name: "コーチング事業向けAI導入",
-    summary:
-      "週150分のレポート業務をゼロにし、1コーチ依存の事業を複数コーチ体制へ拡張可能にした。子どもの目標達成を支援するコーチング事業向けに、Discord Bot・自動レポート生成・管理ダッシュボードを統合したAI実行基盤を設計・実装した受託案件。要件整理から本番運用まで単独で担当し、現在も継続稼働中。",
-    role: ["AI Engineer", "Fullstack"],
-    stack: [
-      "Python",
-      "Discord.py",
-      "Next.js",
-      "TypeScript",
-      "Supabase",
-      "LLM API",
-      "LINE API",
-      "RAG",
-      "Docker",
-      "Render",
-    ],
-    status: "anonymized",
-    detailPage: true,
-    objectAsset: {
-      fallbackImage: "/images/work/coaching-ai-implementation/card.png",
-      alt: "コーチングAI導入のビジュアル表現",
-    },
-    context:
-      "クライアントは50名の生徒を抱えるコーチングスクールを、実質1人で運営していた。面談後の週次レポート作成、保護者への月次送信、提出状況の確認——積み重なると週150分以上がルーティンに消え、支援を改善する余裕も複数コーチ化の余白も生まれない状態だった。過去に複数コーチ体制を試みたが、情報共有と管理が機能せず数か月で崩壊した経緯もある。課題は工数削減ではなく、記録・整理・送信・参照が分散した運営構造そのものにあった。",
-    whatIBuilt:
-      "日次の振り返りを週次レポートへ、週次レポートを月次レポートへと自動集約する階層型の実行基盤を構築した。全会話履歴を毎回処理する代わりに上位レポートへ段階的に圧縮する設計にしたことで、月次工程のトークン消費を89.8%削減できた。保護者向けレポートはAI生成後にコーチが確認・承認する多層フローとし、自動化しながらも誤送信リスクを複数層で制御している。管理ダッシュボードには過去の指導記録を意味検索で引き出せるRAGも統合し、コーチの面談前準備コストも削減した。要件整理からデプロイ・保守まで単独で一貫して担当。本番移行まで約1.5か月。",
-    result:
-      "コーチの手が業務整理から支援そのものへ戻り、新たに4名のコーチを採用可能になった。導入1か月で生徒数が30名増加、解約率が30%低下した。",
-    metrics: [
-      { before: "150分/週", after: "0分", label: "週次レポート作成" },
-      { before: "5分/件", after: "30秒", label: "月次レポート送信" },
-      { after: "89.8%削減", label: "月次トークン消費" },
-      { after: "30%低下", label: "解約率（導入1か月）" },
-    ],
-  },
-  {
     slug: "career-keikakun",
     name: "キャリアけいかくん",
     summary:
@@ -177,6 +103,80 @@ export const WORKS: Work[] = [
         after: "5段パイプライン",
         label: "分析→計画→レビュー→証拠→監査の一気通貫フロー",
       },
+    ],
+  },
+  {
+    slug: "coaching-ai-implementation",
+    name: "コーチング事業向けAI導入",
+    summary:
+      "週150分のレポート業務をゼロにし、1コーチ依存の事業を複数コーチ体制へ拡張可能にした。子どもの目標達成を支援するコーチング事業向けに、Discord Bot・自動レポート生成・管理ダッシュボードを統合したAI実行基盤を設計・実装した受託案件。要件整理から本番運用まで単独で担当し、現在も継続稼働中。",
+    role: ["AI Engineer", "Fullstack"],
+    stack: [
+      "Python",
+      "Discord.py",
+      "Next.js",
+      "TypeScript",
+      "Supabase",
+      "LLM API",
+      "LINE API",
+      "RAG",
+      "Docker",
+      "Render",
+    ],
+    status: "anonymized",
+    detailPage: true,
+    objectAsset: {
+      fallbackImage: "/images/work/coaching-ai-implementation/card.png",
+      alt: "コーチングAI導入のビジュアル表現",
+    },
+    context:
+      "クライアントは50名の生徒を抱えるコーチングスクールを、実質1人で運営していた。面談後の週次レポート作成、保護者への月次送信、提出状況の確認——積み重なると週150分以上がルーティンに消え、支援を改善する余裕も複数コーチ化の余白も生まれない状態だった。過去に複数コーチ体制を試みたが、情報共有と管理が機能せず数か月で崩壊した経緯もある。課題は工数削減ではなく、記録・整理・送信・参照が分散した運営構造そのものにあった。",
+    whatIBuilt:
+      "日次の振り返りを週次レポートへ、週次レポートを月次レポートへと自動集約する階層型の実行基盤を構築した。全会話履歴を毎回処理する代わりに上位レポートへ段階的に圧縮する設計にしたことで、月次工程のトークン消費を89.8%削減できた。保護者向けレポートはAI生成後にコーチが確認・承認する多層フローとし、自動化しながらも誤送信リスクを複数層で制御している。管理ダッシュボードには過去の指導記録を意味検索で引き出せるRAGも統合し、コーチの面談前準備コストも削減した。要件整理からデプロイ・保守まで単独で一貫して担当。本番移行まで約1.5か月。",
+    result:
+      "コーチの手が業務整理から支援そのものへ戻り、新たに4名のコーチを採用可能になった。導入1か月で生徒数が30名増加、解約率が30%低下した。",
+    metrics: [
+      { before: "150分/週", after: "0分", label: "週次レポート作成" },
+      { before: "5分/件", after: "30秒", label: "月次レポート送信" },
+      { after: "89.8%削減", label: "月次トークン消費" },
+      { after: "30%低下", label: "解約率（導入1か月）" },
+    ],
+  },
+  {
+    slug: "business-automation-agent",
+    name: "業務効率化AIエージェント",
+    summary:
+      "対外オペレーション業務を、Slackから自然言語で制御できる実行基盤に再設計した匿名化受託案件。AIが実行計画を生成するが、外部副作用はPolicy Gateの機械的検証と人間の承認を通過するまで実行されない設計。担当者1人あたり月15〜20時間の工数削減を実現した。",
+    role: ["AI Engineer", "Backend", "System Design"],
+    stack: [
+      "Python",
+      "Slack API",
+      "Action DSL",
+      "Policy Gate",
+      "Command Registry",
+      "Playwright",
+      "Docker",
+      "AWS",
+      "Notion API",
+      "Audit Logging",
+    ],
+    status: "anonymized",
+    detailPage: true,
+    objectAsset: {
+      fallbackImage: "/images/work/business-automation-agent/card.png",
+      alt: "業務効率化AIエージェントのビジュアル表現",
+    },
+    context:
+      "対外オペレーション業務の担当者は、プラットフォームごとに CLI を操作し、対応状況を Slack・CLI・Notion に分散して管理していた。条件変更のたびに手作業が発生し、確認コストと抜け漏れリスクが積み上がる構造だった。チーム全体で月60時間規模の工数がルーティンに消えており、オペレーション品質の改善に使える余力もなかった。",
+    whatIBuilt:
+      "設計の核心は「AIを実行主体にしない」という判断だった。Openclaw（AI）が実行計画を生成するが、Policy Gateが権限・テナント確認・Command Registry照合・引数スキーマ検証・影響範囲判定・dry-run完了・承認確認・冪等キー重複の8項目を機械的に検証するまで、いかなる外部副作用も発生しない。agent-with-toolsは採用せず、型付きAction DSLのCommand Registryに登録された操作のみを受け付ける構成にした。\n\nControl Plane（受付・状態管理・承認）、Job Queue（非同期実行・冪等性制御・レート制限）、Sandbox Worker（コンテナ隔離環境）、State Store（実行状態の正）、Outbox/Reconciliation（Notion反映と状態照合の二重保全）、Audit/Observability（構造化ログ・append-only監査証跡）の各レイヤーを実装した。冪等キーはhash(action_id + target_set + selector + business_period)で構成し、Slackのネットワーク再送による二重実行を設計で防止した。Notionの eventual consistency とAPI rate limitに依存しない設計とするため、State Storeを正として扱いNotionを投影先に位置づけた。",
+    result:
+      "担当者1人あたり月15〜20時間の工数削減。コマンド更新時間を約4分の1に圧縮。状況確認を10分から1分台に短縮。GitHubに設計ドキュメント（アーキテクチャ・セキュリティ設計・オペレーション）を公開済み。",
+    metrics: [
+      { after: "月15〜20時間削減", label: "担当者1人あたりの工数削減" },
+      { before: "10分", after: "1分台", label: "状況確認にかかる時間" },
+      { after: "約1/4", label: "コマンド更新時間の圧縮率" },
+      { after: "8項目", label: "Policy Gateの検証チェック数" },
     ],
   },
   {
