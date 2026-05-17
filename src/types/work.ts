@@ -25,6 +25,9 @@ export interface Work {
   stack: string[];
   status: WorkStatus;
   detailPage: boolean;
+  heroImage?: string;
+  inlineImages?: boolean;
+  comingSoon?: boolean;
   githubUrl?: string;
   demoUrl?: string;
   objectAsset: WorkObjectAsset;

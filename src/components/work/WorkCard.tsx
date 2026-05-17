@@ -46,11 +46,18 @@ export function WorkCard({ work }: WorkCardProps) {
             src={work.objectAsset.fallbackImage}
             alt={work.objectAsset.alt}
             fill
-            className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
+            className="object-contain transition-transform duration-300 group-hover:scale-105"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           />
         ) : (
           <PlaceholderObject label={work.objectAsset.alt} />
+        )}
+        {work.comingSoon && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-xs tracking-[0.2em] text-[var(--color-text-subtle)] uppercase">
+              Coming Soon
+            </span>
+          </div>
         )}
       </div>
 
