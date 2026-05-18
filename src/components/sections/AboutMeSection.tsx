@@ -81,17 +81,6 @@ export function AboutMeSection() {
             >
               現在はAIの研究・開発、企業のAI導入における技術支援、AIプロダクトの開発に携わっています。AIを活用した業務ツールの要件定義から本番運用、AIモデルの開発などを担当することが多いです。
             </p>
-            <p
-              className="leading-8 text-[var(--color-text-muted)]"
-              style={{ fontSize: "17px" }}
-            >
-              現在は <a
-                href="https://jibun-vision.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[var(--color-text)] underline decoration-[var(--color-line-strong)] underline-offset-4 transition-colors hover:decoration-[var(--color-text)]"
-              >アイアンド株式会社</a> のCTOとして自社プロダクト「じぶんビジョン」の技術運用を担当する一方、<strong>Human+</strong> として個人で企業のAI導入支援を受託しています。
-            </p>
 
           </div>
         </div>
