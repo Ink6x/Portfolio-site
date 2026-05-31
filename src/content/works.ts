@@ -180,6 +180,44 @@ export const WORKS: Work[] = [
     ],
   },
   {
+    slug: "scout-automation-platform",
+    name: "求人スカウト業務の自動化プラットフォーム",
+    summary:
+      "複数の求人媒体にまたがるスカウト送信・応募者管理業務を自動化する、GCP上のプラットフォーム開発に業務委託として参画。新規媒体3種の連携をデータモデル〜スカウトAPI〜管理画面まで一気通貫で実装し、稼働基盤をCloud Runへ移行、本番から独立したstaging環境とCI/CDをゼロから整備した受託案件。守秘義務に配慮し匿名化している。",
+    role: ["Backend", "Infra / CI-CD", "System Design"],
+    stack: [
+      "Python",
+      "Django",
+      "Django REST Framework",
+      "FastAPI（連携）",
+      "PostgreSQL (Cloud SQL)",
+      "Terraform",
+      "Cloud Run",
+      "GCP",
+      "Docker",
+      "GitHub Actions",
+      "Playwright（連携）",
+    ],
+    status: "anonymized",
+    detailPage: true,
+    objectAsset: {
+      fallbackImage: "/images/work/scout-automation-platform/card.png",
+      alt: "求人スカウト自動化プラットフォームのビジュアル表現",
+    },
+    context:
+      "求人スカウト業務は媒体ごとに管理画面・仕様・データ構造がばらばらで、対応媒体を増やすたびに人手の作業と実装コストが積み上がる構造だった。さらに当初はGCE上で稼働しており、環境の追加やデプロイに手間がかかるうえ、本番と検証環境が分離されていないためリリースのたびにリスクを伴っていた。媒体拡張に強く、安全にデプロイできる基盤へ作り替えることが課題だった。\n\nプラットフォーム全体では、Playwrightによるブラウザ自動操作ロボット群が媒体を横断して並列稼働している（チーム開発）。本ケースでは、そのロボットが扱う応募者データとスカウト業務を管理するWebアプリケーション、およびそれを支えるクラウド基盤を主に担当した。",
+    whatIBuilt:
+      "新規3媒体の連携を、Django上でデータモデル・スカウト送信API・応募者管理画面・DBマイグレーションまで一気通貫で実装した。媒体ごとに異なる応募者ID体系や項目を共通のデータモデルへ正規化し、スカウトの重複送信を防ぐバリデーション、送信可否のトグル、下書き編集APIなど運用に必要な機能をあわせて整備した。既存媒体の構造に揃えることで、媒体追加が定型作業として回る状態にした。\n\n稼働環境をGCEからCloud Runへ移行し、Cloud SQLへの接続をCloud SQL Connector方式へ統一した。あわせて本番から完全に独立したstaging環境（Cloud SQL / Cloud Run）をゼロから構築し、検証してから本番へ出すデプロイフローを確立した。IAM・サービスアカウント・ネットワーク・Cloud Loggingを含む構成はすべてTerraformでコード管理し、最小インスタンス数を0にするなどのコスト最適化も行った。\n\nGitHub ActionsでArtifact Registryと連携したデプロイを完全自動化し、イメージ未存在時のフォールバックなど運用の引っかかりを解消した。DBマイグレーションはコンテナ起動時に安全に流れるようentrypointを整備し、環境間のスキーマ不整合を解消。ER図のドキュメント化も行い、チームがデータ構造を把握しやすい状態を整えた。要件整理から実装・デプロイ・運用まで約6か月担当した。",
+    result:
+      "新規媒体3種を本番に追加し、媒体拡張が定型化された。Cloud Runへの移行とstaging環境・CI/CDの自動化により、検証を挟んだ安全なデプロイが日常的に回る体制を整えた。インフラはTerraformでコード化され、再現性のある環境管理を実現している。クライアントのソースコードは非公開のため、本ページは公開可能な範囲で内容を再構成している。",
+    metrics: [
+      { after: "3媒体", label: "新規追加した媒体連携（モデル〜API〜管理画面）" },
+      { after: "GCE→Cloud Run", label: "稼働基盤の移行を担当" },
+      { after: "staging新設", label: "本番から独立した検証環境をゼロ構築" },
+      { after: "CI/CD自動化", label: "GitHub Actions + Artifact Registry" },
+    ],
+  },
+  {
     slug: "ai-development-research",
     name: "脳波解析・機械学習研究",
     summary: "Coming Soon",
